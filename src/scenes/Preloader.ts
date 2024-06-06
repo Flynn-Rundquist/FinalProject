@@ -37,7 +37,6 @@ export class Preloader extends Scene
         this.load.image('coinObject', 'coinObject.png');
         this.load.image('platformObject', 'platformObject.png');
         this.load.image('backgroundBG', 'backgroundBG.png');
-        this.load.image('background1024x576', 'background1024x576.png');
     }
 
     create ()

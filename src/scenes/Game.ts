@@ -17,7 +17,7 @@ export class Game extends Scene
         this.camera.setBounds(0, 0, 1024, 576);
         this.camera.setBackgroundColor('#87CEEB');
 
-        this.background = this.add.image(512, 384, 'background1024x576');
+        this.background = this.add.image(2080, 1152, 'backgroundBG');
         this.background.setAlpha(0.5);
 
 
