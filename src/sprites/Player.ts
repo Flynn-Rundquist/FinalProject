@@ -10,10 +10,17 @@ import { GameObjects } from 'phaser';
 
 class Player extends GameObjects.Sprite
 {
+    protected health: number = 100;
+    protected score: number;
+
     // The constructor initializes the player sprite.
-    constructor (scene: Phaser.Scene, x: number, y: number)
+    constructor (scene: Phaser.Scene, x: number, y: number, health: number, score: number)
     {
+
         super(scene, x, y, 'mainSprite');
+
+        this.health = health;
+        this.score = score;
 
         // Add the player sprite to the scene.
         scene.add.existing(this);
@@ -40,27 +47,49 @@ class Player extends GameObjects.Sprite
     // Takes keyboard input and moves the player sprite accordingly.
     move (cursors: Phaser.Types.Input.Keyboard.CursorKeys)
     {
-        // If the left arrow key is pressed, move the player sprite to the left.
         if (cursors.left.isDown)
         {
-            this.body.setAccelerationX(-200);
-        }
-        // If the right arrow key is pressed, move the player sprite to the right.
-        else if (cursors.right.isDown)
+            // move the sprites to the left
+            this.body.setVelocityX(-200);
+        } else if (cursors.right.isDown)
         {
-            this.body.setAccelerationX(200);
-        }
-        // If neither the left nor right arrow key is pressed, stop the player sprite.
-        else
-        {
-            this.body.setAccelerationX(0);
-        }
-
-        // If the up arrow key is pressed and the player sprite is on the ground, make the player sprite jump.
-        if (cursors.up.isDown && this.body.onFloor())
-        {
+            // move the sprites to the right
+            this.body.setVelocityX(200);
+        } else if (cursors.space.isDown) {
+            // move the sprites up
             this.body.setVelocityY(-200);
         }
+    }
+
+    // doesn't let the player move below 440 on the y axis
+    update ()
+    {
+        if (this.y > 440)
+        {
+            this.y = 440;
+        }
+    }
+
+    // if players health goes to 0, go to game over
+    gameOver ()
+    {
+        if (this.health === 0)
+        {
+            this.scene.scene.start('GameOver');
+        }
+    }
+
+    // if player collides with enemy, lose health (5 at a time)
+    hitEnemy ()
+    {
+        this.health -= 5;
+    }
+
+    // if player collides with coin, gain score (10 at a time) and regenerate health (5 at a time)
+    collectCoin ()
+    {
+        this.score += 10;
+        this.health += 5;
     }
 }
 export default Player;
