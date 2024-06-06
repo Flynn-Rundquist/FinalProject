@@ -6,11 +6,11 @@
  * Since: 2024-06-06
  */
 
-import { GameObjects } from 'phaser';
+import Phaser from 'phaser';
 
-class Player extends GameObjects.Sprite
+class Player extends Phaser.GameObjects.Sprite
 {
-    protected health: number = 100;
+    public health: number = 100;
     protected score: number;
 
     // The constructor initializes the player sprite.
@@ -22,26 +22,12 @@ class Player extends GameObjects.Sprite
         this.health = health;
         this.score = score;
 
-        // Add the player sprite to the scene.
-        scene.add.existing(this);
+        let player = this.physics.add.sprite(100, 450, 'mainSprite');
 
-        // Enable physics for the player sprite.
-        scene.physics.add.existing(this);
-
-        // Set the player sprite's body to be a circle.
-        this.body.setCircle(16);
-
-        // Set the player sprite's body to be immovable.
-        this.body.setImmovable(true);
-
-        // Set the player sprite's body to have a bounce of 0.2.
-        this.body.setBounce(0.2);
-
-        // Set the player sprite's body to have a drag of 100.
-        this.body.setDrag(100);
-
-        // Set the player sprite's body to have a maximum velocity of 200.
-        this.body.setMaxVelocity(200);
+        player.setBounce(0.2);
+        player.setGravityY(300);
+        player.setCollideWorldBounds(true);
+        this.scene.add.existing(this);
     }
 
     // Takes keyboard input and moves the player sprite accordingly.
@@ -50,18 +36,18 @@ class Player extends GameObjects.Sprite
         if (cursors.left.isDown)
         {
             // move the sprites to the left
-            this.body.setVelocityX(-200);
+            this.x -= 5;
         } else if (cursors.right.isDown)
         {
             // move the sprites to the right
-            this.body.setVelocityX(200);
-        } else if (cursors.space.isDown) {
+            this.x += 5;
+        } else if (cursors.up.isDown) {
             // move the sprites up
-            this.body.setVelocityY(-200);
+            this.y += 5;
         }
     }
 
-    // doesn't let the player move below 440 on the y axis
+    // don't let the player move below 440 on the y axis
     update ()
     {
         if (this.y > 440)
@@ -79,13 +65,13 @@ class Player extends GameObjects.Sprite
         }
     }
 
-    // if player collides with enemy, lose health (5 at a time)
-    hitEnemy ()
+    // if player collides with enemy, lose health
+    collideEnemy ()
     {
-        this.health -= 5;
+        this.health -= 10;
     }
 
-    // if player collides with coin, gain score (10 at a time) and regenerate health (5 at a time)
+    // if player collides with coin, gain score and health
     collectCoin ()
     {
         this.score += 10;
