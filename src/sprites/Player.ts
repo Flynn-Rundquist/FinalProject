@@ -11,7 +11,7 @@ import Phaser from 'phaser';
 class Player extends Phaser.GameObjects.Sprite
 {
     public health: number = 100;
-    protected score: number;
+    public score: number;
 
     // The constructor initializes the player sprite.
     constructor (scene: Phaser.Scene, x: number, y: number, health: number, score: number)

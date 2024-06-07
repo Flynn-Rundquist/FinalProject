@@ -14,7 +14,7 @@ class Enemey extends GameObjects.Sprite
     protected health: number = 10;
 
     // The constructor initializes the enemy sprite.
-    constructor (scene: Phaser.Scene, x: number, y: number, health: number)
+    constructor (scene: Phaser.Scene, x: number, y: number, health: number = 10)
     {
         super(scene, x, y, 'enemySprite');
         this.health = health;
@@ -50,6 +50,7 @@ class Enemey extends GameObjects.Sprite
         if (player.x - this.x < 10 && cursors.space.isDown)
         {
             this.health -= 10;
+            player.score += 10;
         }
     }
 
