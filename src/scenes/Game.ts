@@ -32,18 +32,18 @@ export class Game extends Scene
         this.camera = this.cameras.main;
         this.camera.setBounds(0, 0, 1024, 576);
         
-        // gave me an error when i just did this.add.sprite, ai suggested this way. fix later
-        this.player = this.add.sprite(100, 199, 'playerSprite');
-        let player = new Player({ scene: this, x: 100, y: 0, key: 'playerSprite' }, 100, 0);
+        // make player 
+        this.player = this.add.sprite(50, 100, 'playerSprite');
+        let player = new Player({ scene: this, key: 'playerSprite' }, 100, 450, 100, 0);
 
-        // enemy (same issue as above)
-        this.enemy = this.add.sprite(100, 450, 'enemySprite');
-        let enemy = new Enemy({ scene: this, x: 100, y: 450, key: 'enemySprite' }, 10);
+        // make enemy (random x, 450 y)
+        this.enemy = this.add.sprite(10, 100, 'enemySprite');
+        let enemy = new Enemy({ scene: this, x: Enemy.randomX(player), y: 450, key: 'enemySprite' }, 10);
 
         this.background = this.add.image(0, 0, 'gameBG').setOrigin(0, 0);
         this.background.setAlpha(1);
 
-        // add player sprite (centered around 100, 450)
+        // add player sprite
         Player.addPlayer(this, player);
 
             // every 10 seconds, add an enemy to the scene

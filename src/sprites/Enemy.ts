@@ -20,15 +20,21 @@ class Enemy extends GameObjects.Sprite
         this.health = health;
     }
 
-    // add enemy to the scene (random x, 450 y)
-    addEnemy(scene: Phaser.Scene, enemy: Enemy)
+    // add enemy to the scene
+    public addEnemy(scene: Phaser.Scene, enemy: Enemy)
     {
         scene.add.existing(enemy);
-        this.scene.add.existing(this);
+        scene.physics.add.existing(enemy);
+    }
+
+    // generate random x value for enemy
+    static randomX(player: Player)
+    {
+        return Math.floor(player.x + Math.random() * 1024);
     }
 
     // Makes the enemy sprite move towards player if they're within 100 pixels 
-    wakeUp (player: Player)
+    public wakeUp (player: Player)
     {
         if (this.x - player.x < 100)
         {
@@ -37,7 +43,7 @@ class Enemy extends GameObjects.Sprite
     }
 
     // if enemey hits player, player loses health
-    hitPlayer (player: Player)
+    public hitPlayer (player: Player)
     {
         if (this.x - player.x < 10)
         {
@@ -47,7 +53,7 @@ class Enemy extends GameObjects.Sprite
 
 
     // if player hits enemy, enemy loses health
-    hitEnemy(player: Player, cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
+    public hitEnemy(player: Player, cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
         if (player.x - this.x < 10 && cursors.space.isDown)
         {
             this.health -= 10;
@@ -57,7 +63,7 @@ class Enemy extends GameObjects.Sprite
 
 
     // if the enemies health goes to 0, destroy the sprite
-    dead ()
+    public dead ()
     {
         if (this.health == 0)
         {
