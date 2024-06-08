@@ -27,10 +27,10 @@ class Enemy extends GameObjects.Sprite
         scene.physics.add.existing(enemy);
     }
 
-    // generate random x value for enemy
-    static randomX(player: Player)
+    // generate random x value for enemy (between 500 and 924)
+    static randomX()
     {
-        return Math.floor(player.x + Math.random() * 1024);
+        return Math.floor(Math.random() * (924 - 500) + 500);
     }
 
     // Makes the enemy sprite move towards player if they're within 100 pixels 
