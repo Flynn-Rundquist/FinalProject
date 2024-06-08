@@ -9,21 +9,21 @@
 import { GameObjects } from 'phaser';
 import Player from './Player';
 
-class Enemey extends GameObjects.Sprite
+class Enemy extends GameObjects.Sprite
 {
     protected health: number = 10;
 
     // The constructor initializes the enemy sprite.
-    constructor (scene: Phaser.Scene, x: number, y: number, health: number = 10)
+    constructor (config: { scene: Phaser.Scene, x: number, y: number, key: string }, health: number)
     {
-        super(scene, x, y, 'enemySprite');
+        super(config.scene, config.x, config.y, config.key);
         this.health = health;
     }
 
     // add enemy to the scene (random x, 450 y)
-    addEnemy()
+    addEnemy(scene: Phaser.Scene, enemy: Enemy)
     {
-        let enemy = this.physics.add.sprite(Math.random() * 1024, 450, 'enemySprite');
+        scene.add.existing(enemy);
         this.scene.add.existing(this);
     }
 
@@ -45,6 +45,7 @@ class Enemey extends GameObjects.Sprite
         }
     }
 
+
     // if player hits enemy, enemy loses health
     hitEnemy(player: Player, cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
         if (player.x - this.x < 10 && cursors.space.isDown)
@@ -65,4 +66,4 @@ class Enemey extends GameObjects.Sprite
     }
 
 }
-export default Enemey;
+export default Enemy;

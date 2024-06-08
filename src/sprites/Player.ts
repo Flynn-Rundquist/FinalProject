@@ -6,29 +6,28 @@
  * Since: 2024-06-06
  */
 
-import Phaser from 'phaser';
+import { GameObjects } from 'phaser';
 
-class Player extends Phaser.GameObjects.Sprite
+class Player extends GameObjects.Sprite
 {
     public health: number = 100;
     public score: number;
 
     // The constructor initializes the player sprite.
-    constructor (scene: Phaser.Scene, x: number, y: number, health: number, score: number)
+    constructor (config: { scene: Phaser.Scene, x: number, y: number, key: string }, health: number, score: number)
     {
-
-        super(scene, x, y, 'mainSprite');
-
+        super(config.scene, config.x, config.y, config.key);
         this.health = health;
         this.score = score;
-
-        let player = this.physics.add.sprite(100, 450, 'mainSprite');
-
-        player.setBounce(0.2);
-        player.setGravityY(300);
-        player.setCollideWorldBounds(true);
-        this.scene.add.existing(this);
     }
+
+    // add player
+    static addPlayer(scene: Phaser.Scene, player: Player)
+    {
+        scene.add.existing(player);
+        scene.physics.add.existing(player);
+    }
+
 
     // Takes keyboard input and moves the player sprite accordingly.
     move (cursors: Phaser.Types.Input.Keyboard.CursorKeys)
@@ -47,19 +46,19 @@ class Player extends Phaser.GameObjects.Sprite
         }
     }
 
-    // don't let the player move below 440 on the y axis
+    // don't let the player move below 30 on the y axis
     update ()
     {
-        if (this.y > 440)
+        if (this.y > 30)
         {
-            this.y = 440;
+            this.y = 30;
         }
     }
 
     // if players health goes to 0, go to game over
     gameOver ()
     {
-        if (this.health === 0)
+        if (this.health == 0)
         {
             this.scene.scene.start('GameOver');
         }
