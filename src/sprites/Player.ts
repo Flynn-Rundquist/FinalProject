@@ -45,7 +45,7 @@ class Player extends Physics.Arcade.Sprite {
     update() {
         if (!this.cursors) return;
 
-        const speed = 160;
+        const speed = 150;
 
         // Horizontal movement
         if (this.cursors.left?.isDown) {
@@ -53,7 +53,7 @@ class Player extends Physics.Arcade.Sprite {
         } else if (this.cursors.right?.isDown) {
             this.setVelocityX(speed);
         } else {
-           this.setVelocityX(0);
+            this.setVelocityX(0);
         }
 
         // Jumping
@@ -61,6 +61,8 @@ class Player extends Physics.Arcade.Sprite {
             this.setVelocityY(-150);
         }
     }
+
+    
 }
 
 export default Player;
