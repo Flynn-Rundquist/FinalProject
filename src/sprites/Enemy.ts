@@ -71,6 +71,7 @@ class Enemy extends Physics.Arcade.Sprite {
                 this.health -= 10;
             } else if (distanceToPlayer < 10){
                 player.health -= 10;
+                this.x += 20;
             }
         }
     }

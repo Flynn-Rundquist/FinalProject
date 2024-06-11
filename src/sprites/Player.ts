@@ -45,7 +45,7 @@ class Player extends Physics.Arcade.Sprite {
     update() {
         if (!this.cursors) return;
 
-        const speed = 150;
+        const speed = 100;
 
         // Horizontal movement
         if (this.cursors.left?.isDown) {

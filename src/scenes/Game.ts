@@ -7,6 +7,7 @@ export class Game extends Phaser.Scene {
     private background: Phaser.GameObjects.TileSprite;
     private healthText: Phaser.GameObjects.Text;
     private scoreText: Phaser.GameObjects.Text;
+    private helpText: Phaser.GameObjects.Text;
 
     private player: Player | null = null;
     private enemies: Phaser.GameObjects.Group | null = null;
@@ -73,6 +74,14 @@ export class Game extends Phaser.Scene {
         this.scoreText = this.add.text(850, 30, 'Score: ' + (this.player?.score ?? 0), {
             fontFamily: 'Arial Black',
             fontSize: 24,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 4
+        }).setScrollFactor(0);
+
+        this.helpText = this.add.text(10, 10, 'Use arrow keys to move (up to jump) and space to attack', {
+            fontFamily: 'Arial Black',
+            fontSize: 15,
             color: '#ffffff',
             stroke: '#000000',
             strokeThickness: 4
