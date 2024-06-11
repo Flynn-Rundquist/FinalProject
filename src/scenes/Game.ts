@@ -22,7 +22,7 @@ export class Game extends Phaser.Scene {
         this.camera.setBounds(0, 0, 2048, 576); // Set bounds larger than the visible area
 
         // Add background as a TileSprite for repeating background
-        this.background = this.add.tileSprite(0, 0, 1024, 576, 'gameBG').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, 2048, 576, 'gameBG').setOrigin(0, 0);
         this.background.setScrollFactor(0);
 
         // Set the world bounds so the player can't go below y = 450
@@ -31,7 +31,7 @@ export class Game extends Phaser.Scene {
         // Create player and add to scene
         this.player = new Player({
             scene: this,
-            x: 100,
+            x: 512, // Start the player in the middle of the screen
             y: 450,
             texture: 'playerSprite'
         }, 100, 0);
@@ -40,7 +40,7 @@ export class Game extends Phaser.Scene {
         this.add.existing(this.player);
 
         // Make the camera follow the player
-        this.camera.startFollow(this.player);
+        this.camera.startFollow(this.player, true, 0.5, 0.5); // Center the player
 
         // Initialize enemies group
         this.enemies = this.add.group();
@@ -60,7 +60,6 @@ export class Game extends Phaser.Scene {
             }
         }
 
-        // Display player's health and score in top right corner
         // Create text for player's health
         this.healthText = this.add.text(850, 10, 'Health: ' + (this.player?.health ?? 0), {
             fontFamily: 'Arial Black',
@@ -81,7 +80,7 @@ export class Game extends Phaser.Scene {
 
         this.helpText = this.add.text(10, 10, 'Use arrow keys to move (up to jump) and space to attack', {
             fontFamily: 'Arial Black',
-            fontSize: 15,
+            fontSize: 24,
             color: '#ffffff',
             stroke: '#000000',
             strokeThickness: 4
@@ -105,18 +104,18 @@ export class Game extends Phaser.Scene {
             loop: true
         });
 
-        // add 10 health to the players health every 15 seconds
+        // Add 10 health to the player's health every 15 seconds
         this.time.addEvent({
-            delay: 1500,
+            delay: 15000, // Should be 15000 milliseconds (15 seconds)
             callback: () => {
                 if (this.player) {
-                    if (this.player.health < 90){
+                    if (this.player.health < 90) {
                         this.player.health += 10;
                     }
                 }
             },
             loop: true
-    })
+        });
     }
 
     update() {
@@ -129,11 +128,14 @@ export class Game extends Phaser.Scene {
                 (enemy as Enemy).update(this.player as Player, this.cursors as Phaser.Types.Input.Keyboard.CursorKeys);
             });
 
-            // Scroll the background based on player's movement
-            this.background.tilePositionX = this.player.x;
+            // Update the background's tile position based on player's movement
+            if (this.player.body) {
+                // Adjust the background's position to give the illusion of infinite scrolling
+                this.background.tilePositionX += this.player.body.velocity.x * this.game.loop.delta / 1000;
+            }
 
             // Check if player health is 0, go to game over
-            if (this.player.health == 0) {
+            if (this.player.health === 0) {
                 this.scene.start('GameOver');
             }
 
