@@ -89,11 +89,11 @@ export class Game extends Phaser.Scene {
 
         // Create enemy and add to scene periodically
         this.time.addEvent({
-            delay: 5000,
+            delay: 10000,
             callback: () => {
                 if (this.player) {
-                    const enemyX = this.player.x + Phaser.Math.Between(200, 400); // Get position in front of the player
-                    const enemyY = 435; // Set y position of the enemy
+                    const enemyX = this.player.x + (Math.floor(Math.random() * (924 - 500 + 1)) + 500);
+                    const enemyY = 450; // Set y position of the enemy
                     const enemy = Enemy.addEnemy(this, enemyX, enemyY, 'enemySprite', 10); // Create and add enemy
 
                     // Add enemy to the group
@@ -105,13 +105,13 @@ export class Game extends Phaser.Scene {
             loop: true
         });
 
-        // Add 10 health to the player's health every 15 seconds
+        // Add 5 health to the player's health every 5 seconds
         this.time.addEvent({
-            delay: 15000, // Should be 15000 milliseconds (15 seconds)
+            delay: 5000,
             callback: () => {
                 if (this.player) {
-                    if (this.player.health < 90) {
-                        this.player.health += 10;
+                    if (this.player.health < 95) {
+                        this.player.health += 5;
                     }
                 }
             },
