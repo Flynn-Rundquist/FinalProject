@@ -12,6 +12,8 @@ export class Game extends Phaser.Scene {
     private player: Player | null = null;
     private enemies: Phaser.GameObjects.Group | null = null;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
+    platforms: Phaser.Physics.Arcade.StaticGroup;
+    coin: Phaser.Physics.Arcade.StaticGroup | null = null;
 
     constructor() {
         super('Game');
@@ -25,7 +27,7 @@ export class Game extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, 2048, 576, 'gameBG').setOrigin(0, 0);
         this.background.setScrollFactor(0);
 
-        // Set the world bounds so the player can't go below y = 450
+        // Set the world bounds so the player can't go below y = 576 (world height)
         this.physics.world.setBounds(0, 0, 1048, 450);
 
         // Create player and add to scene
@@ -35,6 +37,13 @@ export class Game extends Phaser.Scene {
             y: 450,
             texture: 'playerSprite'
         }, 100, 0);
+
+        // Platforms
+        this.platforms = this.physics.add.staticGroup();
+        this.platforms.create(400, 400, 'platformObject', 1);
+        this.platforms.create(600, 400, 'platformObject', 1);
+        this.platforms.create(50, 250, 'platformObject', 1);
+        this.platforms.create(750, 220, 'platformObject', 1);
 
         // Add player to the scene
         this.add.existing(this.player);
@@ -58,6 +67,10 @@ export class Game extends Phaser.Scene {
                     this.physics.add.existing(enemy);
                 });
             }
+
+            // Set collisions between player and platforms
+            this.physics.add.collider(this.player, this.platforms);
+            this.physics.add.collider(this.enemies, this.platforms);
         }
 
         // Create text for player's health
@@ -116,6 +129,12 @@ export class Game extends Phaser.Scene {
             },
             loop: true
         });
+    }
+
+    createPlatform(x: number, y: number, key: string, scale: number) {
+        const platform = this.platforms.create(x, y, key).setScale(scale).refreshBody();
+        platform.setSize(platform.width * scale, platform.height * scale);
+        platform.setOffset(0, 0);
     }
 
     update() {
