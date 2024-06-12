@@ -26,12 +26,12 @@ export class Game extends Phaser.Scene {
         this.background.setScrollFactor(0);
 
         // Set the world bounds so the player can't go below y = 450
-        this.physics.world.setBounds(0, 0, 2048, 450);
+        this.physics.world.setBounds(0, 0, 1048, 450);
 
         // Create player and add to scene
         this.player = new Player({
             scene: this,
-            x: 512, // Start the player in the middle of the screen
+            x: 100,
             y: 450,
             texture: 'playerSprite'
         }, 100, 0);
@@ -138,6 +138,10 @@ export class Game extends Phaser.Scene {
             if (this.player.health === 0) {
                 this.scene.start('GameOver');
             }
+
+            // Ensure the camera keeps the player centered
+            this.camera.scrollX = this.player.x - this.camera.width / 2;
+            this.camera.scrollY = this.player.y - this.camera.height / 2;
 
             // Update text displaying player's health and score
             this.healthText.setText('Health: ' + this.player.health);

@@ -57,7 +57,7 @@ class Player extends Physics.Arcade.Sprite {
         }
 
         // Jumping
-        if (this.cursors.up?.isDown) {
+        if (this.cursors.up?.isDown && this.y >= 500) {
             this.setVelocityY(-150);
         }
     }
