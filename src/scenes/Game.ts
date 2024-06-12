@@ -12,6 +12,7 @@ export class Game extends Phaser.Scene {
     private player: Player | null = null;
     private enemies: Phaser.GameObjects.Group | null = null;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
+    private finalScore: number = 0; // Property to store the final score
 
     constructor() {
         super('Game');
@@ -136,7 +137,8 @@ export class Game extends Phaser.Scene {
 
             // Check if player health is 0, go to game over
             if (this.player.health === 0) {
-                this.scene.start('GameOver');
+                this.finalScore = this.player.score; // Store the final score
+                this.scene.start('GameOver', { score: this.finalScore }); // Pass the score to the GameOver scene
             }
 
             // Ensure the camera keeps the player centered
