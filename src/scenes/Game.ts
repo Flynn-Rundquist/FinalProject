@@ -89,10 +89,10 @@ export class Game extends Phaser.Scene {
 
         // Create enemy and add to scene periodically
         this.time.addEvent({
-            delay: 10000,
+            delay: 5000,
             callback: () => {
                 if (this.player) {
-                    const enemyX = this.player.x + (Math.floor(Math.random() * (924 - 500 + 1)) + 500);
+                    const enemyX = this.player.x - Phaser.Math.Between(200, 400);
                     const enemyY = 450; // Set y position of the enemy
                     const enemy = Enemy.addEnemy(this, enemyX, enemyY, 'enemySprite', 10); // Create and add enemy
 
